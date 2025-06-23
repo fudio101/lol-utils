@@ -73,7 +73,6 @@ logs
 *.log
 
 # Runtime data
-pids
 *.pid
 *.seed
 *.pid.lock
