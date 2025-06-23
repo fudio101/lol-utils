@@ -2,13 +2,15 @@ package main
 
 import (
 	"embed"
+
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
+
 	"lol-utils/internal/app"
 )
 
-//go:embed all:frontend/dist
+//go:embed all:frontend-dist
 var assets embed.FS
 
 func main() {
@@ -17,7 +19,7 @@ func main() {
 
 	// Create application with options
 	err := wails.Run(&options.App{
-		Title:  "lol-utils",
+		Title:  "LoL Utils",
 		Width:  1024,
 		Height: 768,
 		AssetServer: &assetserver.Options{

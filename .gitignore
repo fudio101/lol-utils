@@ -27,6 +27,7 @@ go.work.sum
 # Go build artifacts
 build/bin
 dist/
+frontend-dist/
 bin/
 
 # Wails specific
