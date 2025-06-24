@@ -29,12 +29,26 @@ func (h *FileLoader) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	var err error
 	requestedFilename := strings.TrimPrefix(req.URL.Path, "/")
 	println("Requesting file:", requestedFilename)
-	fileData, err := os.ReadFile(requestedFilename)
+	
+	// Define a safe directory
+	const safeDir = "./safe-files/"
+	
+	// Resolve the path relative to the safe directory
+	absPath, err := filepath.Abs(filepath.Join(safeDir, requestedFilename))
+	if err != nil || !strings.HasPrefix(absPath, safeDir) {
+		res.WriteHeader(http.StatusBadRequest)
+		res.Write([]byte(fmt.Sprintf("Invalid file path: %s", requestedFilename)))
+		return
+	}
+	
+	// Read the file from the resolved safe path
+	fileData, err := os.ReadFile(absPath)
 	if err != nil {
 		res.WriteHeader(http.StatusBadRequest)
 		res.Write([]byte(fmt.Sprintf("Could not load file %s", requestedFilename)))
+		return
 	}
-
+	
 	res.Write(fileData)
 }
 
