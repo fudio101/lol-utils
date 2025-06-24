@@ -3,6 +3,7 @@ package main
 import (
 	"embed"
 	"fmt"
+	"html"
 	"net/http"
 	"os"
 	"strings"
@@ -37,7 +38,7 @@ func (h *FileLoader) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	absPath, err := filepath.Abs(filepath.Join(safeDir, requestedFilename))
 	if err != nil || !strings.HasPrefix(absPath, safeDir) {
 		res.WriteHeader(http.StatusBadRequest)
-		res.Write([]byte(fmt.Sprintf("Invalid file path: %s", requestedFilename)))
+		res.Write([]byte(fmt.Sprintf("Invalid file path: %s", html.EscapeString(requestedFilename))))
 		return
 	}
 	
